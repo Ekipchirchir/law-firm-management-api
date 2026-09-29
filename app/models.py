@@ -16,7 +16,7 @@ class Client(Base):
     __tablename__ = "clients"
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False)
-    client_type = Column(String(50), nullable=False)  # Individual, Company, Institution
+    client_type = Column(String(50), default="Individual", nullable=False)  # Individual, Company, Institution
     email = Column(String(255), unique=True, index=True)
     phone = Column(String(50))
     address = Column(Text)
@@ -36,3 +36,19 @@ class Matter(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     client = relationship("Client", back_populates="matters")
+
+class Task(Base):
+    __tablename__ = "tasks"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    description = Column(Text, nullable=True)
+    due_date = Column(DateTime, nullable=False) 
+    status = Column(String(50), default="Pending") 
+    priority = Column(String(50), default="Normal") 
+    matter_id = Column(Integer, ForeignKey("matters.id"), nullable=False)
+    assigned_to_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    matter = relationship("Matter", backref="tasks")
+    assignee = relationship("User", foreign_keys=[assigned_to_id])
