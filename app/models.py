@@ -171,3 +171,23 @@ class TrustTransaction(Base):
 
     trust_account = relationship("TrustAccount", backref="transactions")
     invoice = relationship("Invoice", backref="trust_transactions")
+
+class Expense(Base):
+    __tablename__ = "expenses"
+
+    id = Column(Integer, primary_key=True, index=True)
+    category = Column(String(100), nullable=False)  # Court Fees, Process Server, Registry Search, Travel, Copying
+    description = Column(Text, nullable=False)
+    amount = Column(Numeric(10, 2), nullable=False)
+    is_reimbursable = Column(Boolean, default=True)  # True = Billable to client (Disbursement)
+    is_billed = Column(Boolean, default=False)
+    expense_date = Column(DateTime, default=datetime.utcnow)
+
+    matter_id = Column(Integer, ForeignKey("matters.id"), nullable=False)
+    paid_by_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    invoice_id = Column(Integer, ForeignKey("invoices.id"), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    matter = relationship("Matter", backref="expenses")
+    paid_by = relationship("User", foreign_keys=[paid_by_id])
+    invoice = relationship("Invoice", backref="expenses")

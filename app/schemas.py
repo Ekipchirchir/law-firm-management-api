@@ -245,3 +245,31 @@ class TrustAccountResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class ExpenseCreate(BaseModel):
+    category: str
+    description: str
+    amount: float
+    is_reimbursable: bool = True
+    matter_id: int
+    expense_date: datetime | None = None
+
+class ExpenseResponse(BaseModel):
+    id: int
+    category: str
+    description: str
+    amount: float
+    is_reimbursable: bool
+    is_billed: bool
+    expense_date: datetime
+    matter_id: int
+    paid_by_id: int
+    invoice_id: int | None = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class AttachExpensesToInvoiceRequest(BaseModel):
+    invoice_id: int
+    expense_ids: list[int]
