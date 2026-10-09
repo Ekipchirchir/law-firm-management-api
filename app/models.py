@@ -65,3 +65,18 @@ class Invoice(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     matter = relationship("Matter", backref="invoices")
+
+class Document(Base):
+    __tablename__ = "documents"
+
+    id = Column(Integer, primary_key=True, index=True)
+    filename = Column(String(255), nullable=False)
+    file_path = Column(String(500), nullable=False)
+    file_type = Column(String(50), nullable=True)
+    file_size = Column(Integer, nullable=True)  # in bytes
+    matter_id = Column(Integer, ForeignKey("matters.id"), nullable=False)
+    uploaded_by_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    matter = relationship("Matter", backref="documents")
+    uploader = relationship("User", foreign_keys=[uploaded_by_id])

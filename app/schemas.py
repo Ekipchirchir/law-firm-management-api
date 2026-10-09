@@ -103,3 +103,15 @@ class InvoiceResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class DocumentResponse(BaseModel):
+    id: int
+    filename: str
+    file_type: str | None = None
+    file_size: int | None = None
+    matter_id: int
+    uploaded_by_id: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True

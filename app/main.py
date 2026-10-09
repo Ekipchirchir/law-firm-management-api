@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from app.database import engine, Base
-from app.routers import auth, clients, matters, tasks, billing
+from app.routers import auth, clients, matters, tasks, billing, documents
 
 app = FastAPI(title="LFMS Complete Backed", version="1.0.0")
 
@@ -9,6 +9,7 @@ app.include_router(clients.router)
 app.include_router(matters.router)
 app.include_router(tasks.router)
 app.include_router(billing.router)
+app.include_router(documents.router)
 
 @app.on_event("startup")
 async def startup():

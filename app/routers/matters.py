@@ -13,7 +13,7 @@ router = APIRouter(prefix="/matters", tags=["Matter & Case Management"])
 async def create_matter(
     matter_data: MatterCreate,
     db: AsyncSession = Depends(get_db),
-    current_user: User = Depends(require_role(["Partner", "Advocate"]))
+    current_user: User = Depends(require_role(["Partner", "Advocate", "Admin"]))
 ):
     """Open a new legal matter/case (Partners and Advocates only)."""
     # Verify client exists
