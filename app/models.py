@@ -147,3 +147,27 @@ class Counterparty(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     matter = relationship("Matter", backref="counterparties")
+
+class TrustAccount(Base):
+    __tablename__ = "trust_accounts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    matter_id = Column(Integer, ForeignKey("matters.id"), unique=True, nullable=False)
+    balance = Column(Numeric(12, 2), default=0.00, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    matter = relationship("Matter", backref="trust_account")
+
+class TrustTransaction(Base):
+    __tablename__ = "trust_transactions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    trust_account_id = Column(Integer, ForeignKey("trust_accounts.id"), nullable=False)
+    transaction_type = Column(String(50), nullable=False)  # Desposit, Disbursement, Inoice Payment
+    amount = Column(Numeric(12, 2), nullable=False)
+    description = Column(Text, nullable=False)
+    invoice_id = Column(Integer, ForeignKey("invoices.id"), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    trust_account = relationship("TrustAccount", backref="transactions")
+    invoice = relationship("Invoice", backref="trust_transactions")

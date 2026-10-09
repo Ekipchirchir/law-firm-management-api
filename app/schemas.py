@@ -215,3 +215,33 @@ class ConflictCheckResponse(BaseModel):
     has_potential_conflict: bool
     total_matches: int
     matches: list[ConflictMatch]
+
+class TrustDepositRequest(BaseModel):
+    matter_id: int
+    amount: float
+    description: str
+
+class ApplyTrustToInvoiceRequest(BaseModel):
+    invoice_id: int
+    amount: float
+
+class TrustTransactionResponse(BaseModel):
+    id: int
+    trust_account_id: int
+    transaction_type: str
+    amount: float
+    description: str
+    invoice_id: int | None = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class TrustAccountResponse(BaseModel):
+    id: int
+    matter_id: int
+    balance: float
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
