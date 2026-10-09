@@ -136,3 +136,14 @@ class AuditLog(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     user = relationship("User", foreign_keys=[user_id])
+
+class Counterparty(Base):
+    __tablename__ = "counterparties"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(255), nullable=False, index=True)
+    role = Column(String(100), nullable=False)  # Defendant, Co-defendant, Adverse Party, Parent Company
+    matter_id = Column(Integer, ForeignKey("matters.id"), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    matter = relationship("Matter", backref="counterparties")

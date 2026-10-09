@@ -184,3 +184,34 @@ class AuditLogResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class CounterpartyCreate(BaseModel):
+    name: str
+    role: str
+    matter_id: int
+
+class CounterpartyResponse(BaseModel):
+    id: int
+    name: str
+    role: str
+    matter_id: int
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class ConflictMatch(BaseModel):
+    match_type: str  # Client Name, Client Email, Counterparty, Matter Title
+    entity_id: int
+    matched_text: str
+    matter_id: int | None = None
+    details: str
+
+class ConflictCheckRequest(BaseModel):
+    search_query: str  # Name of individual, company, or entity to screen
+
+class ConflictCheckResponse(BaseModel):
+    search_query: str
+    has_potential_conflict: bool
+    total_matches: int
+    matches: list[ConflictMatch]
