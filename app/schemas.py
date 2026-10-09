@@ -273,3 +273,26 @@ class ExpenseResponse(BaseModel):
 class AttachExpensesToInvoiceRequest(BaseModel):
     invoice_id: int
     expense_ids: list[int]
+
+class FinancialSummary(BaseModel):
+    total_invoiced: float
+    total_paid: float
+    total_unpaid: float
+    total_trust_balances: float
+
+class AdvocatePerformance(BaseModel):
+    advocate_id: int
+    full_name: str
+    total_hours_logged: float
+    total_billable_amount: float
+
+class MatterStatusSummary(BaseModel):
+    total_matters: int
+    open_matters: int
+    closed_matters: int
+    by_practice_area: dict[str, int]
+
+class DashboardAnalyticsResponse(BaseModel):
+    financials: FinancialSummary
+    matter_stats: MatterStatusSummary
+    advocate_performance: list[AdvocatePerformance]
