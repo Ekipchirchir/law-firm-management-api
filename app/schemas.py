@@ -85,3 +85,21 @@ class TaskResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class InvoiceCreate(BaseModel):
+    invoice_number: str
+    matter_id: int
+    amount: float
+    due_date: datetime
+
+class InvoiceResponse(BaseModel):
+    id: int
+    invoice_number: str
+    matter_id: int
+    amount: float
+    status: str
+    due_date: datetime
+    created_at: datetime
+
+    class Config:
+        from_attributes = True

@@ -52,3 +52,16 @@ class Task(Base):
 
     matter = relationship("Matter", backref="tasks")
     assignee = relationship("User", foreign_keys=[assigned_to_id])
+
+class Invoice(Base):
+    __tablename__ = "invoices"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    invoice_number = Column(String(100), unique=True, index=True, nullable=False)
+    matter_id = Column(Integer, ForeignKey("matters.id"), nullable=False)
+    amount = Column(Numeric(10, 2), nullable=False)
+    status = Column(String(50), default="Unpaid")  
+    due_date = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    matter = relationship("Matter", backref="invoices")
