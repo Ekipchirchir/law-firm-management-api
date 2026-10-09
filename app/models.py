@@ -191,3 +191,13 @@ class Expense(Base):
     matter = relationship("Matter", backref="expenses")
     paid_by = relationship("User", foreign_keys=[paid_by_id])
     invoice = relationship("Invoice", backref="expenses")
+
+class DocumentTemplate(Base):
+    __tablename__ = "document_templates"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(255), nullable=False)
+    description = Column(Text, nullable=True)
+    category = Column(String(100), default="General")  # Retainer, Pleading, Letter, Contract
+    content_template = Column(Text, nullable=False)    # Text template with placeholders like {{ client_name }}, {{ matter_title }}
+    created_at = Column(DateTime, default=datetime.utcnow)

@@ -296,3 +296,25 @@ class DashboardAnalyticsResponse(BaseModel):
     financials: FinancialSummary
     matter_stats: MatterStatusSummary
     advocate_performance: list[AdvocatePerformance]
+
+class DocumentTemplateCreate(BaseModel):
+    name: str
+    description: str | None = None
+    category: str = "General"
+    content_template: str  
+
+class DocumentTemplateResponse(BaseModel):
+    id: int
+    name: str
+    description: str | None = None
+    category: str
+    content_template: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class GenerateDocumentRequest(BaseModel):
+    template_id: int
+    matter_id: int
+    custom_variables: dict[str, str] | None = None  
