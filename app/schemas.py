@@ -145,3 +145,29 @@ class InvoiceFromTimeEntriesCreate(BaseModel):
     matter_id: int
     due_date: datetime
     time_entry_ids: list[int]
+
+class EventCreate(BaseModel):
+    title: str
+    description: str | None = None
+    event_type: str  # Court Hearing, Client Meeting, Filing Deadline, Limitation Period
+    location: str | None = None
+    start_time: datetime
+    end_time: datetime
+    matter_id: int
+    assigned_to_id: int | None = None
+
+class EventResponse(BaseModel):
+    id: int
+    title: str
+    description: str | None = None
+    event_type: str
+    location: str | None = None
+    start_time: datetime
+    end_time: datetime
+    matter_id: int
+    created_by_id: int
+    assigned_to_id: int | None = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True

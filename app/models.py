@@ -101,3 +101,23 @@ class TimeEntry(Base):
     matter = relationship("Matter", backref="time_entries")
     user = relationship("User", foreign_keys=[user_id])
     invoice = relationship("Invoice", backref="time_entries")
+
+class Event(Base):
+    __tablename__ = "events"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    description = Column(Text, nullable=True)
+    event_type = Column(String(50), nullable=False)  
+    location = Column(String(255), nullable=True)     
+    start_time = Column(DateTime, nullable=False)
+    end_time = Column(DateTime, nullable=False)
+    
+    matter_id = Column(Integer, ForeignKey("matters.id"), nullable=False)
+    created_by_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    assigned_to_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    matter = relationship("Matter", backref="events")
+    creator = relationship("User", foreign_keys=[created_by_id])
+    assignee = relationship("User", foreign_keys=[assigned_to_id])
