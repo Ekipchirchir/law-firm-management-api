@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, Text, Numeric
+from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, Text, Numeric, Boolean
 from sqlalchemy.orm import relationship
 from app.database import Base
 
@@ -80,3 +80,24 @@ class Document(Base):
 
     matter = relationship("Matter", backref="documents")
     uploader = relationship("User", foreign_keys=[uploaded_by_id])
+
+class TimeEntry(Base):
+    __tablename__ = "time_entries"
+
+    id = Column(Integer, primary_key=True, index=True)
+    description = Column(Text, nullable=False)
+    hours = Column(Numeric(5, 2), nullable=False)  
+    hourly_rate = Column(Numeric(10, 2), nullable=False)
+    total_amount = Column(Numeric(10, 2), nullable=False)  
+    is_billable = Column(Boolean, default=True)
+    is_billed = Column(Boolean, default=False)
+    date_performed = Column(DateTime, default=datetime.utcnow)
+
+    matter_id = Column(Integer, ForeignKey("matters.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    invoice_id = Column(Integer, ForeignKey("invoices.id"), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    matter = relationship("Matter", backref="time_entries")
+    user = relationship("User", foreign_keys=[user_id])
+    invoice = relationship("Invoice", backref="time_entries")

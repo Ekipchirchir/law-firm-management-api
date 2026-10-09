@@ -115,3 +115,33 @@ class DocumentResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class TimeEntryCreate(BaseModel):
+    description: str
+    hours: float
+    is_billable: bool = True
+    matter_id: int
+    date_performed: datetime | None = None
+
+class TimeEntryResponse(BaseModel):
+    id: int
+    description: str
+    hours: float
+    hourly_rate: float
+    total_amount: float
+    is_billable: bool
+    is_billed: bool
+    date_performed: datetime
+    matter_id: int
+    user_id: int
+    invoice_id: int | None = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class InvoiceFromTimeEntriesCreate(BaseModel):
+    invoice_number: str
+    matter_id: int
+    due_date: datetime
+    time_entry_ids: list[int]
