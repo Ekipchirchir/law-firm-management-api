@@ -121,3 +121,18 @@ class Event(Base):
     matter = relationship("Matter", backref="events")
     creator = relationship("User", foreign_keys=[created_by_id])
     assignee = relationship("User", foreign_keys=[assigned_to_id])
+
+class AuditLog(Base):
+    __tablename__ = "audit_logs"
+
+    id = Column(Integer, primary_key=True, index=True)
+    action = Column(String(50), nullable=False)        
+    entity_type = Column(String(50), nullable=False)   # Matter, Document, Invoice, Client,...
+    entity_id = Column(Integer, nullable=True)
+    details = Column(Text, nullable=True)              
+    ip_address = Column(String(50), nullable=True)
+    
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", foreign_keys=[user_id])

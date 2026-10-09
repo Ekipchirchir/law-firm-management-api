@@ -171,3 +171,16 @@ class EventResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class AuditLogResponse(BaseModel):
+    id: int
+    action: str
+    entity_type: str
+    entity_id: int | None = None
+    details: str | None = None
+    ip_address: str | None = None
+    user_id: int | None = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
