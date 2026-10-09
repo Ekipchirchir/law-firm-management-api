@@ -201,3 +201,25 @@ class DocumentTemplate(Base):
     category = Column(String(100), default="General")  # Retainer, Pleading, Letter, Contract
     content_template = Column(Text, nullable=False)    # Text template with placeholders like {{ client_name }}, {{ matter_title }}
     created_at = Column(DateTime, default=datetime.utcnow)
+
+class Notification(Base):
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True, index=True)
+    recipient_email = Column(String(255), nullable=True)
+    recipient_phone = Column(String(50), nullable=True)
+    channel = Column(String(20), nullable=False)  # EMAIL, SMS, IN_APP
+    subject = Column(String(255), nullable=True)
+    message = Column(Text, nullable=False)
+    status = Column(String(50), default="Pending")  # Pending, Sent, Failed
+    scheduled_at = Column(DateTime, default=datetime.utcnow)
+    sent_at = Column(DateTime, nullable=True)
+
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    client_id = Column(Integer, ForeignKey("clients.id"), nullable=True)
+    matter_id = Column(Integer, ForeignKey("matters.id"), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    user = relationship("User", foreign_keys=[user_id])
+    client = relationship("Client", foreign_keys=[client_id])
+    matter = relationship("Matter", foreign_keys=[matter_id])

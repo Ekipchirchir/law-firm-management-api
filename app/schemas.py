@@ -318,3 +318,32 @@ class GenerateDocumentRequest(BaseModel):
     template_id: int
     matter_id: int
     custom_variables: dict[str, str] | None = None  
+
+class NotificationCreate(BaseModel):
+    recipient_email: EmailStr | None = None
+    recipient_phone: str | None = None
+    channel: str = "EMAIL"  # EMAIL, SMS, IN_APP
+    subject: str | None = None
+    message: str
+    scheduled_at: datetime | None = None
+    user_id: int | None = None
+    client_id: int | None = None
+    matter_id: int | None = None
+
+class NotificationResponse(BaseModel):
+    id: int
+    recipient_email: str | None = None
+    recipient_phone: str | None = None
+    channel: str
+    subject: str | None = None
+    message: str
+    status: str
+    scheduled_at: datetime
+    sent_at: datetime | None = None
+    user_id: int | None = None
+    client_id: int | None = None
+    matter_id: int | None = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
